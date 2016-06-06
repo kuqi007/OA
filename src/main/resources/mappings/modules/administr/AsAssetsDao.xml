@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.administr.dao.AsAssetsDao">
+	<resultMap type="asAssets" id="asAssetsResultMap">
+		<!--主键id -->
+		<id property="id" column="id" />
+		<!--创建时间 -->
+		<result property="createDate" column="create_date" />
+		<!--创建人id -->
+		<result property="createBy" column="create_by" />
+		<!--删除标0-未删除，1-已删除 -->
+		<result property="delFlag" column="del_flag" />
+		<!--资产名称 -->
+		<result property="name" column="c_name" />
+		<!--资产编号 -->
+		<result property="number" column="c_number" />
+		<!--资产型号 -->
+		<result property="model" column="c_model" />
+		<!--资产品牌 -->
+		<result property="brand" column="c_brand" />
+		<!--价格 -->
+		<result property="price" column="c_price" />
+		<!--数量 -->
+		<result property="count" column="c_count" />
+		<!--备注 -->
+		<result property="remarks" column="c_remarks" />
+		<!--所属部门id -->
+		<result property="departmentId" column="c_department_id" />
+		<!--购入时间 -->
+		<result property="time" column="c_time" />
+		
+		<!-- 部门名字 -->
+		<result property="departmentName" column="departmentName" />
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.create_date,
+		o.create_by,
+		o.del_flag,
+		o.c_name,
+		o.c_number,
+		o.c_model,
+		o.c_brand,
+		o.c_price,
+		o.c_count,
+		o.c_remarks,
+		o.c_department_id,
+		o.c_time
+	</sql>
+
+	<sql id="searchConditionSql">
+		<if test="condition.name != null and condition.name != ''">
+			AND o.c_name like '%${condition.name}%' 
+		</if>
+		<if test="condition.number != null and condition.number != ''">
+			AND o.c_number = #{condition.number} 
+		</if>
+		<if test="condition.model != null and condition.model != ''">
+			AND o.c_model like '%${condition.model}%' 
+		</if>
+		<if test="condition.brand != null and condition.brand != ''">
+			AND o.c_brand like '%${condition.brand}%' 
+		</if>
+		<if test="condition.remarks != null and condition.remarks != ''">
+			AND o.c_remarks like '%${condition.remarks}%' 
+		</if>
+		<if test="condition.departmentId != null and condition.departmentId != ''">
+			AND o.c_department_id = #{condition.departmentId} 
+		</if>
+
+	</sql>
+
+	<select id="listAsAssetsByPage" resultMap="asAssetsResultMap">
+		SELECT <include refid="allColumnSql"/>
+		,o1.name AS departmentName
+		FROM as_assets o LEFT JOIN sys_office o1 ON o.c_department_id=o1.id 
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+	<select id="listAsAssetsByPageCount" resultType="int">
+		SELECT count(1) FROM as_assets o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getAsAssetsById" resultMap="asAssetsResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_assets o
+		WHERE o.ID = #{id}
+	</select>
+	
+	<select id="getAsAssetsByNumber" resultMap="asAssetsResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_assets o
+		WHERE o.c_number = #{number}
+	</select>
+	
+	<insert id="add" parameterType="asAssets">
+		INSERT INTO as_assets
+		(
+		id,
+		create_date,
+		create_by,
+		del_flag,
+		c_name,
+		c_number,
+		c_model,
+		c_brand,
+		c_price,
+		c_count,
+		c_remarks,
+		c_department_id,
+		c_time
+		)
+		VALUES
+		(
+		#{id},
+		SYSDATE(),
+		#{createBy},
+		0,
+		#{name},
+		#{number},
+		#{model},
+		#{brand},
+		#{price},
+		#{count},
+		#{remarks},
+		#{departmentId},
+		#{time}
+		)
+	</insert>
+
+	<update id="update" parameterType="asAssets" >
+		UPDATE as_assets SET
+		c_name = #{name},
+		c_number = #{number},
+		c_model = #{model},
+		c_brand = #{brand},
+		c_price = #{price},
+		c_count = #{count},
+		c_remarks = #{remarks},
+		c_department_id = #{departmentId},
+		c_time = #{time}
+		WHERE ID = #{id}
+	</update>
+
+	<delete id="delByIds">
+		DELETE FROM as_assets 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

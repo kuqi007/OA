@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.work.dao.WorkDjustDetailsDao">
+	<resultMap type="workDjustDetails" id="workDjustDetailsResultMap">
+		<!--主键id -->
+		<id property="id" column="id" />
+		<!--创建时间 -->
+		<result property="createDate" column="create_date" />
+		<!--创建人id -->
+		<result property="createBy" column="create_by" />
+		<!--删除标记1-未删除2-已删除 -->
+		<result property="delFlag" column="del_flag" />
+		<!--e得货号 -->
+		<result property="ehavingid" column="c_eHavingId" />
+		<!--商品品牌 -->
+		<result property="brand" column="c_brand" />
+		<!--供应商 -->
+		<result property="supplier" column="c_supplier" />
+		<!--商品名称 -->
+		<result property="name" column="c_name" />
+		<!--规格/型号 -->
+		<result property="specifications" column="c_specifications" />
+		<!--原供货价 -->
+		<result property="priceOld" column="c_price_old" />
+		<!--现供货价 -->
+		<result property="priceNew" column="c_price_new" />
+		<!--上调/下调% -->
+		<result property="percentage" column="c_percentage" />
+		<!--原e得价 -->
+		<result property="onpriceOld" column="c_onPrice_old" />
+		<!--现e得价 -->
+		<result property="onpriceNew" column="c_onPrice_new" />
+		<!--上调/下调% -->
+		<result property="onpercentage" column="c_onPercentage" />
+		<!--申请原因 -->
+		<result property="reason" column="c_reason" />
+		<!--调整日期 -->
+		<result property="time" column="c_time" />
+		<!--价格调整表id -->
+		<result property="djustid" column="c_djustId" />
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.create_date,
+		o.create_by,
+		o.del_flag,
+		o.c_eHavingId,
+		o.c_brand,
+		o.c_supplier,
+		o.c_name,
+		o.c_specifications,
+		o.c_price_old,
+		o.c_price_new,
+		o.c_percentage,
+		o.c_onPrice_old,
+		o.c_onPrice_new,
+		o.c_onPercentage,
+		o.c_reason,
+		o.c_time,
+		o.c_djustId
+	</sql>
+
+	<sql id="searchConditionSql">
+		<if test="condition.ehavingid != null and condition.ehavingid != ''">
+			AND o.c_eHavingId = #{condition.ehavingid} 
+		</if>
+		<if test="condition.brand != null and condition.brand != ''">
+			AND o.c_brand like '%${condition.brand}%' 
+		</if>
+		<if test="condition.supplier != null and condition.supplier != ''">
+			AND o.c_supplier like '%${condition.supplier}%' 
+		</if>
+		<if test="condition.name != null and condition.name != ''">
+			AND o.c_name like '%${condition.name}%' 
+		</if>
+		<if test="condition.specifications != null and condition.specifications != ''">
+			AND o.c_specifications like '%${condition.specifications}%' 
+		</if>
+		<if test="condition.djustid != null and condition.djustid != ''">
+			AND o.c_djustId = #{condition.djustid} 
+		</if>
+		AND o.del_flag = 0
+		ORDER BY o.create_date DESC
+	</sql>
+
+	<select id="listWorkDjustDetailsByPage" resultMap="workDjustDetailsResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_djust_details o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+		LIMIT #{pageNoBegin},#{pageSize} 
+	</select>
+	<select id="listWorkDjustDetailsByPageCount" resultType="int">
+		SELECT count(1) FROM work_djust_details o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getWorkDjustDetailsById" resultMap="workDjustDetailsResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_djust_details o
+		WHERE o.ID = #{id}
+	</select>
+	<select id="listDjustDetails" resultMap="workDjustDetailsResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_djust_details o
+		WHERE o.c_djustId = #{id}
+	</select>
+	<insert id="add" parameterType="workDjustDetails">
+		INSERT INTO work_djust_details
+		(
+		id,
+		create_date,
+		create_by,
+		del_flag,
+		c_eHavingId,
+		c_brand,
+		c_supplier,
+		c_name,
+		c_specifications,
+		c_price_old,
+		c_price_new,
+		c_percentage,
+		c_onPrice_old,
+		c_onPrice_new,
+		c_onPercentage,
+		c_reason,
+		c_time,
+		c_djustId
+		)
+		VALUES
+		(
+		#{id},
+		SYSDATE(),
+		#{createBy},
+		0,
+		#{ehavingid},
+		#{brand},
+		#{supplier},
+		#{name},
+		#{specifications},
+		#{priceOld},
+		#{priceNew},
+		#{percentage},
+		#{onpriceOld},
+		#{onpriceNew},
+		#{onpercentage},
+		#{reason},
+		#{time},
+		#{djustid}
+		)
+	</insert>
+
+	<update id="update" parameterType="workDjustDetails" >
+		UPDATE work_djust_details SET
+		c_eHavingId = #{ehavingid},
+		c_brand = #{brand},
+		c_supplier = #{supplier},
+		c_name = #{name},
+		c_specifications = #{specifications},
+		c_price_old = #{priceOld},
+		c_price_new = #{priceNew},
+		c_percentage = #{percentage},
+		c_onPrice_old = #{onpriceOld},
+		c_onPrice_new = #{onpriceNew},
+		c_onPercentage = #{onpercentage},
+		c_reason = #{reason},
+		c_time = #{time},
+		c_djustId = #{djustid}
+		WHERE ID = #{id}
+	</update>
+
+	<delete id="delByIds">
+		DELETE FROM work_djust_details 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

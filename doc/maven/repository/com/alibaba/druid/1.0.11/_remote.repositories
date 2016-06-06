@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Wed Mar 09 16:49:03 CST 2016
+druid-1.0.11.jar>=
+druid-1.0.11.jar>oschina-repos=
+druid-1.0.11-sources.jar>oschina-repos=
+druid-1.0.11.pom>oschina-repos=

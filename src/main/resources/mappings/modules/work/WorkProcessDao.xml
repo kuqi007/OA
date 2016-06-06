@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.work.dao.WorkProcessDao">
+	<resultMap type="workProcess" id="workProcessResultMap">
+		<!--主键id -->
+		<id property="id" column="id" />
+		<!--创建时间 -->
+		<result property="createDate" column="create_date" />
+		<!--创建人id -->
+		<result property="createBy" column="create_by" />
+		<!--删除标记1-未删除2-已删除 -->
+		<result property="delFlag" column="del_flag" />
+		<!--单据类型（1-请假单） -->
+		<result property="billType" column="bill_type" />
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.create_date,
+		o.create_by,
+		o.del_flag,
+		o.bill_type
+	</sql>
+
+	<sql id="searchConditionSql">
+
+	ORDER BY o.create_date DESC
+	</sql>
+
+	<select id="listWorkProcessByPage" resultMap="workProcessResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_process o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+		LIMIT #{pageNoBegin},#{pageSize} 
+	</select>
+	<select id="listWorkProcess" resultMap="workProcessResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_process o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+	<select id="listWorkProcessByPageCount" resultType="int">
+		SELECT count(1) FROM work_process o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+	
+	<select id="getWorkProcess" resultMap="workProcessResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_process o 
+		LEFT JOIN work_user_process o1 ON o.id=o1.process_id 
+		WHERE 1=1 
+		AND o1.user_id=#{uid}
+		AND o.bill_type=#{type}
+		<include refid="searchConditionSql"/> 
+	</select>
+	
+	<select id="getWorkProcessById" resultMap="workProcessResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_process o
+		WHERE o.ID = #{id}
+	</select>
+
+	<insert id="add" parameterType="workProcess">
+		INSERT INTO work_process
+		(
+		id,
+		create_date,
+		create_by,
+		del_flag,
+		bill_type
+		)
+		VALUES
+		(
+		#{id},
+		SYSDATE(),
+		#{createBy},
+		0,
+		#{billType}
+		)
+	</insert>
+
+	<update id="update" parameterType="workProcess" >
+		UPDATE work_process SET
+		bill_type = #{billType}
+		WHERE ID = #{id}
+	</update>
+
+	<delete id="delByIds">
+		DELETE FROM work_process 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.checkin.dao.IOaCheckrealDao">
+	<resultMap type="oaCheckreal" id="oaCheckrealResultMap">
+		<!--id -->
+		<id property="id" column="id" />
+		<!--日期 -->
+		<result property="date" column="date" />
+		<!--上班签到 -->
+		<result property="signIn" column="sign_in" />
+		<!--下班签退 -->
+		<result property="signOut" column="sign_out" />
+		<!--工号 -->
+		<result property="userNo" column="user_no" />
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.date,
+		o.sign_in,
+		o.sign_out,
+		o.user_no AS "user.no",
+		a.name AS "user.name",
+		b.name AS "user.office.name"
+	</sql>
+	<sql id="Joins">
+		LEFT JOIN sys_user a ON a.`no`=o.user_no
+		LEFT JOIN sys_office b ON b.id=a.office_id
+	</sql>
+	<sql id="searchConditionSql">
+		<if test="condition.user != null and condition.user!= '' and condition.user.no!=null and condition.user.no!=''">
+			AND o.user_no = ${condition.user.no}
+		</if>
+	<if test="condition.user!= null and condition.user!= '' and condition.user.name!=null and condition.user.name!=''">
+			AND a.name like '%${condition.user.name}%'
+		</if>
+		<if test="condition.office!= null and condition.office!= '' and condition.office.name!=null and condition.office.name!=''">
+			AND b.name like '%${condition.office.name}%'
+		</if>
+		<if test="condition.beginDate!=null and condition.beginDate!=null and condition.endDate!='' and condition.endDate!='' ">
+				AND o.date BETWEEN #{condition.beginDate} AND date_add(#{condition.endDate}, INTERVAL 1 day)
+		</if>
+	</sql>
+
+	<select id="listOaCheckrealByPage" resultMap="oaCheckrealResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM oa_checkreal o <include 
+			refid="Joins"/>
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+	<select id="listOaCheckrealByPageCount" resultType="int">
+		SELECT count(1) FROM oa_checkreal o <include 
+			refid="Joins"/>
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getOaCheckrealById" resultMap="oaCheckrealResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM oa_checkreal o
+		WHERE o.ID = #{id}
+	</select>
+
+	<insert id="add" parameterType="oaCheckreal" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+		INSERT INTO oa_checkreal
+		(
+		date,
+		sign_in,
+		sign_out,
+		user_no
+		)
+		VALUES
+		(
+		#{date},
+		#{signIn},
+		#{signOut},
+		#{userNo}
+		)
+	</insert>
+
+	<update id="update" parameterType="oaCheckreal" >
+		UPDATE oa_checkreal SET
+		date = #{date},
+		sign_in = #{signIn},
+		sign_out = #{signOut},
+		user_no = #{userNo}
+		WHERE ID = #{id}
+	</update>
+
+	<delete id="delByIds">
+		DELETE FROM oa_checkreal 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

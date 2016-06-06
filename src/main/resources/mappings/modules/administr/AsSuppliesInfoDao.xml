@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.administr.dao.AsSuppliesInfoDao">
+	<resultMap type="asSuppliesInfo" id="asSuppliesInfoResultMap">
+		<!--主键id -->
+		<id property="id" column="id" />
+		<!--创建时间 -->
+		<result property="createDate" column="create_date" />
+		<!--创建人 -->
+		<result property="createBy" column="create_by" />
+		<!--删除标记0-未删除1-已删除 -->
+		<result property="delFlag" column="del_flag" />
+		<!--出库时间 -->
+		<result property="time" column="c_time" />
+		<!--办公用品id -->
+		<result property="articles" column="c_articles" />
+		<!--数量 -->
+		<result property="num" column="c_num" />
+		<!-- 采购单id -->
+		<result property="shoppingId" column="c_shoppingId" />
+		<!-- 采购单流水 -->
+		<result property="serialNumber" column="c_serialNumber" />
+		
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.create_date,
+		o.create_by,
+		o.del_flag,
+		o.c_time,
+		o.c_articles,
+		o.c_num,
+		o.c_shoppingId,
+		o.c_serialNumber
+	</sql>
+
+	<sql id="searchConditionSql">
+		<if test="condition.articles != null and condition.articles != ''">
+			AND o.c_articles like '%${condition.articles}%' 
+		</if>
+		AND o.del_flag = 0
+		ORDER BY o.create_date DESC
+	</sql>
+
+	<select id="listAsSuppliesInfoByPage" resultMap="asSuppliesInfoResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_supplies_info o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+		LIMIT #{pageNoBegin},#{pageSize} 
+	</select>
+	<select id="listAsSuppliesInfoByPageCount" resultType="int">
+		SELECT count(1) FROM as_supplies_info o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getAsSuppliesInfoById" resultMap="asSuppliesInfoResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_supplies_info o
+		WHERE o.ID = #{id}
+	</select>
+
+	<insert id="add" parameterType="asSuppliesInfo">
+		INSERT INTO as_supplies_info
+		(
+		id,
+		create_date,
+		create_by,
+		del_flag,
+		c_time,
+		c_articles,
+		c_num,
+		c_shoppingId,
+		c_serialNumber
+		)
+		VALUES
+		(
+		#{id},
+		SYSDATE(),
+		#{createBy},
+		0,
+		#{time},
+		#{articles},
+		#{num},
+		#{shoppingId},
+		#{serialNumber}
+		)
+	</insert>
+
+	<update id="update" parameterType="asSuppliesInfo" >
+		UPDATE as_supplies_info SET
+		c_time = #{time},
+		c_articles = #{articles},
+		c_num = #{num}
+		WHERE ID = #{id}
+	</update>
+
+	<!-- <delete id="delByIds">
+		DELETE FROM as_supplies_info 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete> -->
+	<update id="delByIds">
+		UPDATE as_supplies_info SET del_flag = 1 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+</mapper>

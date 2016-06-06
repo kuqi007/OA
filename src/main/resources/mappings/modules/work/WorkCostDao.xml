@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.work.dao.WorkCostDao">
+	<resultMap type="workCost" id="workCostResultMap">
+		<!--主键id -->
+		<id property="id" column="id" />
+		<!--创建时间 -->
+		<result property="createDate" column="create_date" />
+		<!--创建人id -->
+		<result property="createBy" column="create_by" />
+		<!--删除标记1-未删除2-已删除 -->
+		<result property="delFlag" column="del_flag" />
+		<!--部门id -->
+		<result property="department" column="c_department" />
+		<!--名字 -->
+		<result property="name" column="c_name" />
+		<!--报销日期 -->
+		<result property="time" column="c_time" />
+		<!--摘要 -->
+		<result property="abstract1" column="c_abstract1" />
+		<!--金额 -->
+		<result property="money11" column="c_money11" />
+		<!--金额 -->
+		<result property="money12" column="c_money12" />
+		<!--金额 -->
+		<result property="money13" column="c_money13" />
+		<!--金额 -->
+		<result property="money14" column="c_money14" />
+		<!--金额 -->
+		<result property="money15" column="c_money15" />
+		<!--金额 -->
+		<result property="money16" column="c_money16" />
+		<!--金额 -->
+		<result property="money17" column="c_money17" />
+		<!--金额 -->
+		<result property="money18" column="c_money18" />
+		<!--科目1 -->
+		<result property="subject1" column="c_subject1" />
+		<!--单据张数 -->
+		<result property="num1" column="c_num1" />
+		<!-- -->
+		<result property="abstract2" column="c_abstract2" />
+		<!-- -->
+		<result property="money21" column="c_money21" />
+		<!-- -->
+		<result property="money22" column="c_money22" />
+		<!-- -->
+		<result property="money23" column="c_money23" />
+		<!-- -->
+		<result property="money24" column="c_money24" />
+		<!-- -->
+		<result property="money25" column="c_money25" />
+		<!-- -->
+		<result property="money26" column="c_money26" />
+		<!-- -->
+		<result property="money27" column="c_money27" />
+		<!-- -->
+		<result property="money28" column="c_money28" />
+		<!-- -->
+		<result property="subject2" column="c_subject2" />
+		<!-- -->
+		<result property="num2" column="c_num2" />
+		<!-- -->
+		<result property="abstract3" column="c_abstract3" />
+		<!-- -->
+		<result property="money31" column="c_money31" />
+		<!-- -->
+		<result property="money32" column="c_money32" />
+		<!-- -->
+		<result property="money33" column="c_money33" />
+		<!-- -->
+		<result property="money34" column="c_money34" />
+		<!-- -->
+		<result property="money35" column="c_money35" />
+		<!-- -->
+		<result property="money36" column="c_money36" />
+		<!-- -->
+		<result property="money37" column="c_money37" />
+		<!-- -->
+		<result property="money38" column="c_money38" />
+		<!-- -->
+		<result property="subject3" column="c_subject3" />
+		<!-- -->
+		<result property="num3" column="c_num3" />
+		<!-- -->
+		<result property="abstract4" column="c_abstract4" />
+		<!-- -->
+		<result property="money41" column="c_money41" />
+		<!-- -->
+		<result property="money42" column="c_money42" />
+		<!-- -->
+		<result property="money43" column="c_money43" />
+		<!-- -->
+		<result property="money44" column="c_money44" />
+		<!-- -->
+		<result property="money45" column="c_money45" />
+		<!-- -->
+		<result property="money46" column="c_money46" />
+		<!-- -->
+		<result property="money47" column="c_money47" />
+		<!-- -->
+		<result property="money48" column="c_money48" />
+		<!-- -->
+		<result property="subject4" column="c_subject4" />
+		<!-- -->
+		<result property="num4" column="c_num4" />
+		<!-- -->
+		<result property="abstract5" column="c_abstract5" />
+		<!-- -->
+		<result property="money51" column="c_money51" />
+		<!-- -->
+		<result property="money52" column="c_money52" />
+		<!-- -->
+		<result property="money53" column="c_money53" />
+		<!-- -->
+		<result property="money54" column="c_money54" />
+		<!-- -->
+		<result property="money55" column="c_money55" />
+		<!-- -->
+		<result property="money56" column="c_money56" />
+		<!-- -->
+		<result property="money57" column="c_money57" />
+		<!-- -->
+		<result property="money58" column="c_money58" />
+		<!-- -->
+		<result property="subject5" column="c_subject5" />
+		<!-- -->
+		<result property="num5" column="c_num5" />
+		<!-- -->
+		<result property="abstract6" column="c_abstract6" />
+		<!-- -->
+		<result property="money61" column="c_money61" />
+		<!-- -->
+		<result property="money62" column="c_money62" />
+		<!-- -->
+		<result property="money63" column="c_money63" />
+		<!-- -->
+		<result property="money64" column="c_money64" />
+		<!-- -->
+		<result property="money65" column="c_money65" />
+		<!-- -->
+		<result property="money66" column="c_money66" />
+		<!-- -->
+		<result property="money67" column="c_money67" />
+		<!-- -->
+		<result property="money68" column="c_money68" />
+		<!-- -->
+		<result property="subject6" column="c_subject6" />
+		<!-- -->
+		<result property="num6" column="c_num6" />
+		<!--人民币合计（大写） -->
+		<result property="capital" column="c_capital" />
+		<!--部门经理（1-同意2-不同意） -->
+		<result property="opinion1" column="c_opinion1" />
+		<!--部门经理签字 -->
+		<result property="sign1" column="c_sign1" />
+		<!--部门经理意见 -->
+		<result property="text1" column="c_text1" />
+		<!--部门经理签字时间 -->
+		<result property="date1" column="c_date1" />
+		<!--签字人id -->
+		<result property="people1" column="c_people1" />
+		<!--分管领导（1-同意2-不同意） -->
+		<result property="opinion2" column="c_opinion2" />
+		<!--分管领导签字 -->
+		<result property="sign2" column="c_sign2" />
+		<!--分管领导意见 -->
+		<result property="text2" column="c_text2" />
+		<!--分管领导签字时间 -->
+		<result property="date2" column="c_date2" />
+		<!--签字人id -->
+		<result property="people2" column="c_people2" />
+		<!--人力行政（1-同意2-不同意） -->
+		<result property="opinion3" column="c_opinion3" />
+		<!--人力行政签字 -->
+		<result property="sign3" column="c_sign3" />
+		<!--人力行政意见 -->
+		<result property="text3" column="c_text3" />
+		<!--人力行政签字时间 -->
+		<result property="date3" column="c_date3" />
+		<!--签字人id -->
+		<result property="people3" column="c_people3" />
+		<!--财务（1-同意2-不同意） -->
+		<result property="opinion4" column="c_opinion4" />
+		<!--财务签字 -->
+		<result property="sign4" column="c_sign4" />
+		<!--财务意见 -->
+		<result property="text4" column="c_text4" />
+		<!--财务签证时间 -->
+		<result property="date4" column="c_date4" />
+		<!--签字人id -->
+		<result property="people4" column="c_people4" />
+		<!--总经理（1-同意2-不同意） -->
+		<result property="opinion5" column="c_opinion5" />
+		<!--总经理签字 -->
+		<result property="sign5" column="c_sign5" />
+		<!--总经理意见 -->
+		<result property="text5" column="c_text5" />
+		<!--总经理签字时间 -->
+		<result property="date5" column="c_date5" />
+		<!--签字人id -->
+		<result property="people5" column="c_people5" />
+		<result property="opinion6" column="c_opinion6" />
+		<result property="sign6" column="c_sign6" />
+		<result property="text6" column="c_text6" />
+		<result property="date6" column="c_date6" />
+		<result property="people6" column="c_people6" />
+		<!--申请状态1-第一步审批，2-第二步审批 -->
+		<result property="state" column="c_state" />
+		<!--0-审批中1-审批通过2-审批失败3-已终止 -->
+		<result property="flag" column="c_flag" />
+		<!--公司内部唯一编号 -->
+		<result property="transaction" column="c_transaction" />
+		
+		<result property="departmentName" column="departmentName" />
+		<result property="flagPayment" column="c_flag_payment" />
+		<result property="emergency" column="c_emergency"/>
+		<result property="examination" column="c_examination"/>
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.create_date,
+		o.create_by,
+		o.del_flag,
+		o.c_department,
+		o.c_name,
+		o.c_time,
+		o.c_abstract1,
+		o.c_money11,
+		o.c_money12,
+		o.c_money13,
+		o.c_money14,
+		o.c_money15,
+		o.c_money16,
+		o.c_money17,
+		o.c_money18,
+		o.c_subject1,
+		o.c_num1,
+		o.c_abstract2,
+		o.c_money21,
+		o.c_money22,
+		o.c_money23,
+		o.c_money24,
+		o.c_money25,
+		o.c_money26,
+		o.c_money27,
+		o.c_money28,
+		o.c_subject2,
+		o.c_num2,
+		o.c_abstract3,
+		o.c_money31,
+		o.c_money32,
+		o.c_money33,
+		o.c_money34,
+		o.c_money35,
+		o.c_money36,
+		o.c_money37,
+		o.c_money38,
+		o.c_subject3,
+		o.c_num3,
+		o.c_abstract4,
+		o.c_money41,
+		o.c_money42,
+		o.c_money43,
+		o.c_money44,
+		o.c_money45,
+		o.c_money46,
+		o.c_money47,
+		o.c_money48,
+		o.c_subject4,
+		o.c_num4,
+		o.c_abstract5,
+		o.c_money51,
+		o.c_money52,
+		o.c_money53,
+		o.c_money54,
+		o.c_money55,
+		o.c_money56,
+		o.c_money57,
+		o.c_money58,
+		o.c_subject5,
+		o.c_num5,
+		o.c_abstract6,
+		o.c_money61,
+		o.c_money62,
+		o.c_money63,
+		o.c_money64,
+		o.c_money65,
+		o.c_money66,
+		o.c_money67,
+		o.c_money68,
+		o.c_subject6,
+		o.c_num6,
+		o.c_capital,
+		o.c_opinion1,
+		o.c_sign1,
+		o.c_text1,
+		o.c_date1,
+		o.c_people1,
+		o.c_opinion2,
+		o.c_sign2,
+		o.c_text2,
+		o.c_date2,
+		o.c_people2,
+		o.c_opinion3,
+		o.c_sign3,
+		o.c_text3,
+		o.c_date3,
+		o.c_people3,
+		o.c_opinion4,
+		o.c_sign4,
+		o.c_text4,
+		o.c_date4,
+		o.c_people4,
+		o.c_opinion5,
+		o.c_sign5,
+		o.c_text5,
+		o.c_date5,
+		o.c_people5,
+		o.c_opinion6,
+		o.c_sign6,
+		o.c_text6,
+		o.c_date6,
+		o.c_people6,
+		o.c_state,
+		o.c_flag,
+		o.c_transaction,
+		o.c_flag_payment,
+		o.c_emergency,
+		o.c_examination
+	</sql>
+
+	<sql id="searchConditionSql">
+		<if test="condition.department != null and condition.department != ''">
+			AND o.c_department =#{condition.department} 
+		</if>
+		<if test="condition.name != null and condition.name != ''">
+			AND o.c_name like '%${condition.name}%' 
+		</if>
+		<if test="condition.state != null">
+			AND o.c_state = #{condition.state} 
+		</if>
+		<if test="condition.createBy != null and condition.createBy != ''">
+			AND o.create_by = #{condition.createBy} 
+		</if>
+		<if test="condition.flag != null">
+			AND o.c_flag = #{condition.flag} 
+		</if>
+		<if test="condition.signPeople != null and condition.signPeople != ''">
+			AND (o.c_people1 = #{condition.signPeople}
+			OR  o.c_people2 = #{condition.signPeople}
+			OR  o.c_people3 = #{condition.signPeople}
+			OR  o.c_people4 = #{condition.signPeople}
+			OR  o.c_people5 = #{condition.signPeople}
+			OR (o.create_by = #{condition.signPeople} AND c_flag!=0))
+		</if>
+		<if test="condition.transaction != null and condition.transaction != ''">
+			AND o.c_transaction like '%${condition.transaction}%'
+		</if>
+		<if test="condition.beginTime != null and condition.beginTime != ''">
+			AND o.create_date >= #{condition.beginTime} 
+		</if>
+		<if test="condition.endTime != null and condition.endTime != ''">
+			<![CDATA[  AND o.create_date <= #{condition.endTime} ]]>
+		</if>
+		<if test="condition.examination != null and condition.examination != ''">
+			  AND o.c_examination = #{condition.examination}
+		</if>
+		<if test="condition.trialIng != null">
+			<![CDATA[  AND o.c_flag != 0 ]]>
+		</if>
+		AND o.del_flag = 0
+		ORDER BY o.create_date DESC
+	</sql>
+
+	<select id="listWorkCostByPage" resultMap="workCostResultMap">
+		SELECT <include refid="allColumnSql"/>,o1.name AS departmentName
+		FROM work_cost o LEFT JOIN sys_office o1 ON o.c_department=o1.id
+		WHERE 1=1 <include refid="searchConditionSql"/>
+		LIMIT #{pageNoBegin},#{pageSize} 
+	</select>
+	<select id="listWorkCost" resultMap="workCostResultMap">
+		SELECT <include refid="allColumnSql"/>,o1.name AS departmentName
+		FROM work_cost o LEFT JOIN sys_office o1 ON o.c_department=o1.id
+		WHERE 1=1 <include refid="searchConditionSql"/>
+	</select>
+	<select id="listWorkCostByPageCount" resultType="int">
+		SELECT count(1) FROM work_cost o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getWorkCostById" resultMap="workCostResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_cost o
+		WHERE o.ID = #{id}
+	</select>
+
+	<insert id="add" parameterType="workCost">
+		INSERT INTO work_cost
+		(
+		id,
+		create_date,
+		create_by,
+		del_flag,
+		c_department,
+		c_name,
+		c_time,
+		c_abstract1,
+		c_money11,
+		c_money12,
+		c_money13,
+		c_money14,
+		c_money15,
+		c_money16,
+		c_money17,
+		c_money18,
+		c_subject1,
+		c_num1,
+		c_abstract2,
+		c_money21,
+		c_money22,
+		c_money23,
+		c_money24,
+		c_money25,
+		c_money26,
+		c_money27,
+		c_money28,
+		c_subject2,
+		c_num2,
+		c_abstract3,
+		c_money31,
+		c_money32,
+		c_money33,
+		c_money34,
+		c_money35,
+		c_money36,
+		c_money37,
+		c_money38,
+		c_subject3,
+		c_num3,
+		c_abstract4,
+		c_money41,
+		c_money42,
+		c_money43,
+		c_money44,
+		c_money45,
+		c_money46,
+		c_money47,
+		c_money48,
+		c_subject4,
+		c_num4,
+		c_abstract5,
+		c_money51,
+		c_money52,
+		c_money53,
+		c_money54,
+		c_money55,
+		c_money56,
+		c_money57,
+		c_money58,
+		c_subject5,
+		c_num5,
+		c_abstract6,
+		c_money61,
+		c_money62,
+		c_money63,
+		c_money64,
+		c_money65,
+		c_money66,
+		c_money67,
+		c_money68,
+		c_subject6,
+		c_num6,
+		c_capital,
+		c_opinion1,
+		c_sign1,
+		c_text1,
+		c_date1,
+		c_people1,
+		c_opinion2,
+		c_sign2,
+		c_text2,
+		c_date2,
+		c_people2,
+		c_opinion3,
+		c_sign3,
+		c_text3,
+		c_date3,
+		c_people3,
+		c_opinion4,
+		c_sign4,
+		c_text4,
+		c_date4,
+		c_people4,
+		c_opinion5,
+		c_sign5,
+		c_text5,
+		c_date5,
+		c_people5,
+		c_opinion6,
+		c_sign6,
+		c_text6,
+		c_date6,
+		c_people6,
+		c_state,
+		c_flag,
+		c_transaction,
+		c_flag_payment,
+		c_emergency,
+		c_examination
+		)
+		VALUES
+		(
+		#{id},
+		SYSDATE(),
+		#{createBy},
+		0,
+		#{department},
+		#{name},
+		#{time},
+		#{abstract1},
+		#{money11},
+		#{money12},
+		#{money13},
+		#{money14},
+		#{money15},
+		#{money16},
+		#{money17},
+		#{money18},
+		#{subject1},
+		#{num1},
+		#{abstract2},
+		#{money21},
+		#{money22},
+		#{money23},
+		#{money24},
+		#{money25},
+		#{money26},
+		#{money27},
+		#{money28},
+		#{subject2},
+		#{num2},
+		#{abstract3},
+		#{money31},
+		#{money32},
+		#{money33},
+		#{money34},
+		#{money35},
+		#{money36},
+		#{money37},
+		#{money38},
+		#{subject3},
+		#{num3},
+		#{abstract4},
+		#{money41},
+		#{money42},
+		#{money43},
+		#{money44},
+		#{money45},
+		#{money46},
+		#{money47},
+		#{money48},
+		#{subject4},
+		#{num4},
+		#{abstract5},
+		#{money51},
+		#{money52},
+		#{money53},
+		#{money54},
+		#{money55},
+		#{money56},
+		#{money57},
+		#{money58},
+		#{subject5},
+		#{num5},
+		#{abstract6},
+		#{money61},
+		#{money62},
+		#{money63},
+		#{money64},
+		#{money65},
+		#{money66},
+		#{money67},
+		#{money68},
+		#{subject6},
+		#{num6},
+		#{capital},
+		#{opinion1},
+		#{sign1},
+		#{text1},
+		#{date1},
+		#{people1},
+		#{opinion2},
+		#{sign2},
+		#{text2},
+		#{date2},
+		#{people2},
+		#{opinion3},
+		#{sign3},
+		#{text3},
+		#{date3},
+		#{people3},
+		#{opinion4},
+		#{sign4},
+		#{text4},
+		#{date4},
+		#{people4},
+		#{opinion5},
+		#{sign5},
+		#{text5},
+		#{date5},
+		#{people5},
+		#{opinion6},
+		#{sign6},
+		#{text6},
+		#{date6},
+		#{people6},
+		#{state},
+		#{flag},
+		#{transaction},
+		0,
+		#{emergency},
+		#{examination}
+		)
+	</insert>
+
+	<update id="update" parameterType="workCost" >
+		UPDATE work_cost SET
+		c_opinion1 = #{opinion1},
+		c_sign1 = #{sign1},
+		c_text1 = #{text1},
+		c_date1 = #{date1},
+		c_people1 = #{people1},
+		c_opinion2 = #{opinion2},
+		c_sign2 = #{sign2},
+		c_text2 = #{text2},
+		c_date2 = #{date2},
+		c_people2 = #{people2},
+		c_opinion3 = #{opinion3},
+		c_sign3 = #{sign3},
+		c_text3 = #{text3},
+		c_date3 = #{date3},
+		c_people3 = #{people3},
+		c_opinion4 = #{opinion4},
+		c_sign4 = #{sign4},
+		c_text4 = #{text4},
+		c_date4 = #{date4},
+		c_people4 = #{people4},
+		c_opinion5 = #{opinion5},
+		c_sign5 = #{sign5},
+		c_text5 = #{text5},
+		c_date5 = #{date5},
+		c_people5 = #{people5},
+		c_opinion6 = #{opinion6},
+		c_sign6 = #{sign6},
+		c_text6 = #{text6},
+		c_date6 = #{date6},
+		c_people6 = #{people6},
+		c_state = #{state},
+		c_flag = #{flag},
+		c_examination = #{examination}
+		WHERE ID = #{id}
+	</update>
+	<update id="termination">
+		UPDATE work_cost SET c_flag = 3 
+		WHERE ID =#{id}
+	</update>
+		<update id="updateAutograph" parameterType="workCost" >
+		UPDATE work_cost SET
+		c_opinion1 = #{opinion1},
+		c_sign1 = #{sign1},
+		c_text1 = #{text1},
+		c_date1 = #{date1},
+		c_people1 = #{people1},
+		c_opinion2 = #{opinion2},
+		c_sign2 = #{sign2},
+		c_text2 = #{text2},
+		c_date2 = #{date2},
+		c_people2 = #{people2},
+		c_opinion3 = #{opinion3},
+		c_sign3 = #{sign3},
+		c_text3 = #{text3},
+		c_date3 = #{date3},
+		c_people3 = #{people3},
+		c_opinion4 = #{opinion4},
+		c_sign4 = #{sign4},
+		c_text4 = #{text4},
+		c_date4 = #{date4},
+		c_people4 = #{people4},
+		c_opinion5 = #{opinion5},
+		c_sign5 = #{sign5},
+		c_text5 = #{text5},
+		c_date5 = #{date5},
+		c_people5 = #{people5},
+		c_state = #{state},
+		c_flag = #{flag},
+		c_examination = #{examination}
+		WHERE ID = #{id}
+	</update>
+	
+	<!-- <delete id="delByIds">
+		DELETE FROM work_cost 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete> -->
+	<update id="delByIds">
+		UPDATE work_cost SET del_flag = 1 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="changePayment">
+		UPDATE work_cost SET c_flag_payment = #{flag} 
+		WHERE ID =#{id}
+	</update>
+</mapper>

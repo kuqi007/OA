@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.work.dao.WorkApplyDetailsDao">
+	<resultMap type="workApplyDetails" id="workApplyDetailsResultMap">
+		<!--主键id -->
+		<id property="id" column="id" />
+		<!--创建时间 -->
+		<result property="createDate" column="create_date" />
+		<!--创建人 -->
+		<result property="createBy" column="create_by" />
+		<!--删除标记0-未删除1-已删除 -->
+		<result property="delFlag" column="del_flag" />
+		<!--申请表id -->
+		<result property="applyid" column="c_applyId" />
+		<!--办公用品id -->
+		<result property="articles" column="c_articles" />
+		<!--数量 -->
+		<result property="num" column="c_num" />
+		
+		
+		<result property="articlesName" column="c_articlesName" />
+		<result property="company" column="c_company" />
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.create_date,
+		o.create_by,
+		o.del_flag,
+		o.c_applyId,
+		o.c_articles,
+		o.c_num
+	</sql>
+
+	<sql id="searchConditionSql">
+		<if test="condition.applyid != null and condition.applyid != ''">
+			AND o.c_applyId = #{condition.applyid} 
+		</if>
+		<if test="condition.articles != null and condition.articles != ''">
+			AND o.c_articles = #{condition.articles} 
+		</if>
+		ORDER BY o.create_date DESC
+	</sql>
+
+	<select id="listWorkApplyDetailsByPage" resultMap="workApplyDetailsResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_apply_details o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+		LIMIT #{pageNoBegin},#{pageSize} 
+	</select>
+	<select id="listWorkApplyDetailsByPageCount" resultType="int">
+		SELECT count(1) FROM work_apply_details o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getWorkApplyDetailsById" resultMap="workApplyDetailsResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_apply_details o
+		WHERE o.ID = #{id}
+	</select>
+	<select id="listApplyDetails" resultMap="workApplyDetailsResultMap">
+		SELECT <include refid="allColumnSql"/>,o1.c_name AS c_articlesName,o1.c_company AS c_company
+		FROM work_apply_details o LEFT JOIN as_supplies o1 ON o1.id=o.c_articles
+		WHERE o.c_applyId = #{id}
+	</select>
+	
+	<insert id="add" parameterType="workApplyDetails">
+		INSERT INTO work_apply_details
+		(
+		id,
+		create_date,
+		create_by,
+		del_flag,
+		c_applyId,
+		c_articles,
+		c_num
+		)
+		VALUES
+		(
+		#{id},
+		SYSDATE(),
+		#{createBy},
+		0,
+		#{applyid},
+		#{articles},
+		#{num}
+		)
+	</insert>
+
+	<update id="update" parameterType="workApplyDetails" >
+		UPDATE work_apply_details SET
+		c_applyId = #{applyid},
+		c_articles = #{articles},
+		c_num = #{num}
+		WHERE ID = #{id}
+	</update>
+
+	<delete id="delByIds">
+		DELETE FROM work_apply_details 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

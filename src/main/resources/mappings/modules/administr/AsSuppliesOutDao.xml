@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.administr.dao.AsSuppliesOutDao">
+  <resultMap type="asSuppliesOut" id="asSuppliesOutResultMap">
+  <!--主键id -->
+	<id property="id" column="id" />
+	<!--创建时间 -->
+	<result property="createDate" column="create_date" />
+	<!--创建人id -->
+	<result property="createBy" column="create_by" />
+    <!-- 删除标记0-未删除1-已删除 -->
+    <result property="delFlag" column="del_flag" />
+    <!-- 签收人id -->
+    <result property="peopleId" column="c_people_id" />
+    <!-- 出库时间 -->
+    <result property="time" column="c_time" />
+    <!-- 签收状态（0-未签收1-已签收） -->
+    <result property="state" column="c_state"/>
+  </resultMap>
+  <sql id="allColumnSql">
+    o.id,
+    o.create_date,
+    o.create_by,
+    o.del_flag,
+    o.c_people_id,
+    o.c_time,
+    o.c_state
+  </sql>
+  <sql id="allColumnSqlClassfied">
+    o.id,
+    o.create_date,
+    o.create_by,
+    o.del_flag,
+    o.c_people_id,
+    o.c_time,
+    o.c_state,
+    a.user_type,
+    a.name AS peopleName,
+    a.office_id,
+    c.name AS officeName
+  </sql>
+  
+<sql id="Joins">
+LEFT JOIN sys_user a ON a.id = o.c_people_id
+LEFT JOIN sys_office c ON c.id = a.office_id
+</sql>
+  
+  
+  <sql id="searchConditionSql">
+	  <if test="condition.peopleId != null and condition.peopleId != ''">
+	       AND o.c_people_id = #{condition.peopleId}
+	  </if>
+	  <if test="condition.state != null">
+			AND o.c_state =#{condition.state} 
+	</if>
+	AND o.del_flag = 0
+	ORDER BY o.create_date DESC
+  </sql>
+  
+  <sql id="searchConditionSqlClassfied">
+	  <if test="condition.peopleId != null and condition.peopleId != ''">
+	       AND o.c_people_id = #{condition.peopleId}
+	  </if>
+	  <if test="condition.state != null">
+			AND o.c_state =#{condition.state} 
+	</if>
+	AND a.user_type &gt;= #{user.userType}  
+	AND o.del_flag = 0
+	AND a.office_id=#{user.office.id}
+	ORDER BY o.create_date DESC
+  </sql>
+
+<!--根据权限查询出库流水  -->
+<select id="listAsSuppliesOutByPageClassfied" resultMap="asSuppliesOutResultMap">
+    SELECT DISTINCT <include refid="allColumnSqlClassfied"/>
+    FROM as_supplies_out o
+    <include refid="Joins"/>
+    WHERE 1=1 <include refid="searchConditionSqlClassfied"/>
+    LIMIT #{pageNoBegin},#{pageSize} 
+  </select>
+  
+  <!--根据权限查询出库流水总数  -->
+  <select id="listAsSuppliesOutByPageCountClassfied" resultType="int">
+    SELECT count(1) FROM as_supplies_out o
+    <include refid="Joins"/>
+    WHERE 1=1 <include refid="searchConditionSqlClassfied"/>
+  </select>
+  
+  
+  
+  
+  
+  <select id="listAsSuppliesOutAll" resultMap="asSuppliesOutResultMap">
+    SELECT <include refid="allColumnSql"/>
+    FROM as_supplies_out o
+  </select>
+  
+
+  <select id="listAsSuppliesOutByPage" resultMap="asSuppliesOutResultMap">
+    SELECT DISTINCT <include refid="allColumnSql"/>
+    FROM as_supplies_out o
+    WHERE 1=1 <include refid="searchConditionSql"/>
+    LIMIT #{pageNoBegin},#{pageSize} 
+  </select>
+  
+  <select id="listAsSuppliesOutByPageCount" resultType="int">
+    SELECT count(1) FROM as_supplies_out o
+    WHERE 1=1 <include refid="searchConditionSql"/>
+  </select>
+
+  <select id="getAsSuppliesOutById" resultMap="asSuppliesOutResultMap">
+    SELECT <include refid="allColumnSql"/>
+    FROM as_supplies_out o
+    WHERE o.ID = #{id}
+  </select>
+
+  <insert id="add" parameterType="asSuppliesOut">
+    INSERT INTO as_supplies_out
+    (
+    id,
+    create_date,
+    create_by,
+    del_flag,
+    c_people_id,
+    c_time,
+    c_state
+    )
+    VALUES
+    (
+	#{id},
+	SYSDATE(),
+	#{createBy},
+	0,
+	#{peopleId},
+	#{time},
+	#{state}
+    )
+  </insert>
+
+  <update id="update" parameterType="asSuppliesOut">
+    UPDATE as_supplies_out SET
+    create_date = #{createDate},
+    create_by = #{createBy},
+    c_people_id = #{peopleId},
+    c_time = #{time},
+    c_state = #{state}
+    WHERE ID = #{id}
+  </update>
+   <update id="updateSign">
+    UPDATE as_supplies_out SET
+    c_state = #{state}
+    WHERE ID = #{id}
+  </update>
+
+ <!--  <delete id="delByIds">
+    DELETE FROM as_supplies_out
+    WHERE ID IN
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete> -->
+  <update id="delByIds">
+		UPDATE as_supplies_out SET del_flag = 1 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	
+</mapper>

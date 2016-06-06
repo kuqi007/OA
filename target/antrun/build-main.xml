@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <property name="dbunit.datatype" value="org.dbunit.ext.mysql.MySqlDataTypeFactory"/>
+  <property file="src/main/resources/jeesite.properties"/>
+  <sql onerror="continue" userid="${jdbc.username}" encoding="UTF-8" driver="${jdbc.driver}" password="${jdbc.password}" url="${jdbc.url}">
+    <classpath refid="maven.test.classpath"/>
+    <transaction src="db/sys/jeesite_${jdbc.type}.sql"/>
+    <transaction src="db/cms/jeesite_${jdbc.type}.sql"/>
+    <transaction src="db/oa/jeesite_${jdbc.type}.sql"/>
+    <transaction src="db/gen/jeesite_${jdbc.type}.sql"/>
+    <transaction src="db/gen/example_${jdbc.type}.sql"/>
+    <transaction src="db/test/jeesite_${jdbc.type}.sql"/>
+    <transaction src="db/act/drop/activiti.${jdbc.type}.drop.engine.sql"/>
+    <transaction src="db/act/drop/activiti.${jdbc.type}.drop.history.sql"/>
+    <transaction src="db/act/drop/activiti.${jdbc.type}.drop.identity.sql"/>
+    <transaction src="db/act/create/activiti.${jdbc.type}.create.engine.sql"/>
+    <transaction src="db/act/create/activiti.${jdbc.type}.create.history.sql"/>
+    <transaction src="db/act/create/activiti.${jdbc.type}.create.identity.sql"/>
+  </sql>
+  <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="maven.test.classpath"/>
+  <dbunit userid="${jdbc.username}" driver="${jdbc.driver}" password="${jdbc.password}" url="${jdbc.url}">
+    <dbconfig>
+      <property name="datatypeFactory" value="${dbunit.datatype}"/>
+    </dbconfig>
+    <classpath refid="maven.test.classpath"/>
+    <operation transaction="true" src="db/sys/jeesite_data.xls" format="xls" type="INSERT"/>
+    <operation transaction="true" src="db/cms/jeesite_data.xls" format="xls" type="INSERT"/>
+  </dbunit>
+</target>
+</project>

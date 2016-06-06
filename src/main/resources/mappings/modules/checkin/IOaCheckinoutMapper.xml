@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.checkin.dao.IOaCheckinoutDao">
+	<resultMap type="oaCheckinout" id="oaCheckinoutResultMap">
+		<!--id -->
+		<id property="id" column="id" />
+		<!--工号 -->
+		<result property="userNo" column="user_no" />
+		<!--用户姓名 -->
+		<result property="userName" column="user_name" />
+		<!--登记时间 -->
+		<result property="checkTime" column="checktime" />
+		<!--验证方式 -->
+		<result property="verifycode" column="verifycode" />
+		<!--更新时间 -->
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.user_no AS "user.no",
+		a.name AS "user.name",
+		b.name AS "user.office.name",
+		o.checktime,
+		o.verifycode,
+		o.update_time
+	</sql>
+	<sql id="Joins">
+		LEFT JOIN sys_user a ON a.`no`=o.user_no
+		LEFT JOIN sys_office b ON b.id=a.office_id
+	</sql>
+	<sql id="searchConditionSql">
+		<if test="condition.userNo != null and condition.userNo != ''">
+			AND o.user_no = #{condition.userNo}
+		</if>
+		<if test="condition.userName!= null and condition.userName!= ''">
+			AND a.name like '%${condition.userName}%'
+		</if>
+		<if test="condition.office!= null and condition.office!= '' and condition.office.name!=null and condition.office.name!=''">
+			AND b.name like '%${condition.office.name}%'
+		</if>
+		<if test="condition.verifycode != null and condition.verifycode != ''">
+			AND o.verifycode like '%${condition.verifycode}%'
+		</if>
+		<if
+			test="condition.beginDate!=null and condition.beginDate!=null and condition.endDate!='' and condition.endDate!='' ">
+			<!-- <if test="condition.beginDate==condition.endDate">
+				AND o.checktime BETWEEN #{condition.beginDate} AND
+				date_add(#{condition.beginDate}, INTERVAL 1 day)加一天
+			</if>
+			<if test="condition.beginDate!=condition.endDate"> -->
+				AND o.checktime BETWEEN #{condition.beginDate} AND date_add(#{condition.endDate}, INTERVAL 1 day)<!-- 加一天 -->
+			<!-- </if> -->
+		</if>
+		 order by o.user_no,o.checktime
+	</sql>
+
+	<select id="listOaCheckinoutByPage" resultMap="oaCheckinoutResultMap">
+		SELECT <include refid="allColumnSql" /> FROM oa_checkinout o <include 
+			refid="Joins"/> WHERE 1=1 <include refid="searchConditionSql" />
+		<!-- SELECT
+		<include refid="allColumnSql" />
+		FROM ((SELECT * FROM oa_checkinout a where checktime = (select max(checktime) from
+		oa_checkinout where user_no = a.user_no ) order by a.user_no )
+		union
+		(SELECT
+		 *
+		FROM oa_checkinout a where checktime = (select min(checktime) from
+		oa_checkinout where user_no = a.user_no)  order by a.user_no))   as o <include 
+			refid="Joins"/>
+		order by o.user_no,o.checktime -->
+	</select>
+	<select id="listOaCheckinoutByPageCount" resultType="int">
+		SELECT count(1) FROM oa_checkinout o
+		<include refid="Joins" />
+		WHERE 1=1
+		<include refid="searchConditionSql" />
+	</select>
+
+	<select id="getOaCheckinoutById" resultMap="oaCheckinoutResultMap">
+		SELECT
+		<include refid="allColumnSql" />
+		FROM oa_checkinout o
+		WHERE o.ID = #{id}
+	</select>
+
+	<insert id="add" parameterType="oaCheckinout">
+		<selectKey resultType="java.lang.String" order="BEFORE"
+			keyProperty="id">
+			SELECT SYS_GUID()
+		</selectKey>
+		INSERT INTO oa_checkinout
+		(
+		id,
+		user_no,
+		user_name,
+		checktime,
+		verifycode,
+		update_time
+		)
+		VALUES
+		(
+		#{id},
+		#{userNo},
+		#{userName},
+		#{checkTime},
+		#{verifycode},
+		#{updateTime}
+		)
+	</insert>
+
+	<update id="update" parameterType="oaCheckinout">
+		UPDATE
+		oa_checkinout SET
+		user_no = #{userNo},
+		user_name = #{userName},
+		checktime =#{checkTime},
+		verifycode = #{verifycode},
+		update_time = #{updateTime}
+		WHERE ID = #{id}
+	</update>
+
+	<delete id="delByIds">
+		DELETE FROM oa_checkinout
+		WHERE ID IN
+		<foreach collection="array" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.administr.dao.AsCroomDao">
+	<resultMap type="asCroom" id="asCroomResultMap">
+		<!--主键id -->
+		<id property="id" column="id" />
+		<!--创建时间 -->
+		<result property="createDate" column="create_date" />
+		<!--创建人id -->
+		<result property="createBy" column="create_by" />
+		<!--删除标0-未删除，1-已删除 -->
+		<result property="delFlag" column="del_flag" />
+		<!--会议室名称 -->
+		<result property="name" column="c_name" />
+		<!--会议室可容纳人数 -->
+		<result property="number" column="c_number" />
+		<!--设备情况 -->
+		<result property="equipment" column="c_equipment" />
+		<!--所在地点 -->
+		<result property="position" column="c_position" />
+		<!--会议室描述 -->
+		<result property="describe" column="c_describe" />
+		<!--会议室管理员id -->
+		<result property="adminId" column="c_admin_id" />
+		<!--会议室状态1-启用2-禁用 -->
+		<result property="state" column="c_state" />
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.create_date,
+		o.create_by,
+		o.del_flag,
+		o.c_name,
+		o.c_number,
+		o.c_equipment,
+		o.c_position,
+		o.c_describe,
+		o.c_admin_id,
+		o.c_state
+	</sql>
+
+	<sql id="searchConditionSql">
+		<if test="condition.name != null and condition.name != ''">
+			AND o.c_name like '%${condition.name}%' 
+		</if>
+		<if test="condition.equipment != null and condition.equipment != ''">
+			AND o.c_equipment like '%${condition.equipment}%' 
+		</if>
+		<if test="condition.position != null and condition.position != ''">
+			AND o.c_position like '%${condition.position}%' 
+		</if>
+		<if test="condition.describe != null and condition.describe != ''">
+			AND o.c_describe like '%${condition.describe}%' 
+		</if>
+		<if test="condition.adminId != null and condition.adminId != ''">
+			AND o.c_admin_id like '%${condition.adminId}%' 
+		</if>
+		ORDER BY o.create_date DESC
+	</sql>
+
+	<select id="listAsCroomByPage" resultMap="asCroomResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_croom o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+		LIMIT #{pageNoBegin},#{pageSize}  
+	</select>
+	<select id="listAsCroomByPageCount" resultType="int">
+		SELECT count(1) FROM as_croom o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getAsCroomById" resultMap="asCroomResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_croom o
+		WHERE o.ID = #{id}
+	</select>
+
+	<insert id="add" parameterType="asCroom">
+		INSERT INTO as_croom
+		(
+		id,
+		create_date,
+		create_by,
+		del_flag,
+		c_name,
+		c_number,
+		c_equipment,
+		c_position,
+		c_describe,
+		c_admin_id,
+		c_state
+		)
+		VALUES
+		(
+		#{id},
+		SYSDATE(),
+		#{createBy},
+		0,
+		#{name},
+		#{number},
+		#{equipment},
+		#{position},
+		#{describe},
+		#{adminId},
+		#{state}
+		)
+	</insert>
+
+	<update id="update" parameterType="asCroom" >
+		UPDATE as_croom SET
+		c_name = #{name},
+		c_number = #{number},
+		c_equipment = #{equipment},
+		c_position = #{position},
+		c_describe = #{describe},
+		c_admin_id = #{adminId},
+		c_state = #{state}
+		WHERE ID = #{id}
+	</update>
+
+	<delete id="delByIds">
+		DELETE FROM as_croom 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

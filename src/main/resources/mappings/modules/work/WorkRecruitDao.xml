@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.work.dao.WorkRecruitDao">
+	<resultMap type="workRecruit" id="workRecruitResultMap">
+		<!--主键 -->
+		<id property="id" column="id" />
+		<!--创建时间 -->
+		<result property="createDate" column="create_date" />
+		<!--创建人id -->
+		<result property="createBy" column="create_by" />
+		<!--删除标记1-未删除2-已删除 -->
+		<result property="delFlag" column="del_flag" />
+		<!--部门id -->
+		<result property="department" column="c_department" />
+		<!--职务id -->
+		<result property="post" column="c_post" />
+		<!--申请人名字 -->
+		<result property="name" column="c_name" />
+		<!-- 需求人数 -->
+		<result property="count" column="c_count" />
+		<!--招聘途径 -->
+		<result property="channel" column="c_channel" />
+		<result property="otherText" column="c_otherText" />
+		<!--提报日期 -->
+		<result property="time" column="c_time" />
+		<!--岗位需求类型0-离职补充1-调动补充2-岗位新增（编制内）3-岗位扩编（编制外） -->
+		<result property="type" column="c_type" />
+		<!--试用薪资 -->
+		<result property="price1" column="c_price1" />
+		<!--转正薪资 -->
+		<result property="price2" column="c_price2" />
+		<!--需求等级（0-紧急1-一般紧急2-非紧急） -->
+		<result property="grade" column="c_grade" />
+		<!--到岗时间 -->
+		<result property="timeing" column="c_timeing" />
+		<!--性别（0-男1-女2-不限） -->
+		<result property="sex" column="c_sex" />
+		<!--年龄 -->
+		<result property="age" column="c_age" />
+		<!--学历 -->
+		<result property="education" column="c_education" />
+		<result property="edText" column="c_edText" />
+		<!--专业 -->
+		<result property="major" column="c_major" />
+		<!--经验 -->
+		<result property="experience" column="c_experience" />
+		<!--其他 -->
+		<result property="other" column="c_other" />
+		<!--岗位职责 -->
+		<result property="duty" column="c_duty" />
+		<!--备注 -->
+		<result property="remarks" column="c_remarks" />
+		<!--部门主管（1-同意2-不同意） -->
+		<result property="opinion1" column="c_opinion1" />
+		<!--部门主管签字 -->
+		<result property="sign1" column="c_sign1" />
+		<!--部门主管意见 -->
+		<result property="text1" column="c_text1" />
+		<!--部门主管签字时间 -->
+		<result property="date1" column="c_date1" />
+		<!--签字人id -->
+		<result property="people1" column="c_people1" />
+		<!--部门经理（1-同意2-不同意） -->
+		<result property="opinion2" column="c_opinion2" />
+		<!--部门经理签字 -->
+		<result property="sign2" column="c_sign2" />
+		<!--部门经理意见 -->
+		<result property="text2" column="c_text2" />
+		<!--部门经理签字时间 -->
+		<result property="date2" column="c_date2" />
+		<!--签字人id -->
+		<result property="people2" column="c_people2" />
+		<!--分管领导（1-同意2-不同意） -->
+		<result property="opinion3" column="c_opinion3" />
+		<!--分管领导签字 -->
+		<result property="sign3" column="c_sign3" />
+		<!--分管领导意见 -->
+		<result property="text3" column="c_text3" />
+		<!--分管领导签字时间 -->
+		<result property="date3" column="c_date3" />
+		<!--签字人id -->
+		<result property="people3" column="c_people3" />
+		<!--人力行政（1-同意2-不同意） -->
+		<result property="opinion4" column="c_opinion4" />
+		<!--人力行政签字 -->
+		<result property="sign4" column="c_sign4" />
+		<!--人力行政意见 -->
+		<result property="text4" column="c_text4" />
+		<!--人力行政签证时间 -->
+		<result property="date4" column="c_date4" />
+		<!--签字人id -->
+		<result property="people4" column="c_people4" />
+		<!--总经理（1-同意2-不同意） -->
+		<result property="opinion5" column="c_opinion5" />
+		<!--总经理签字 -->
+		<result property="sign5" column="c_sign5" />
+		<!--总经理意见 -->
+		<result property="text5" column="c_text5" />
+		<!--总经理签字时间 -->
+		<result property="date5" column="c_date5" />
+		<!--签字人id -->
+		<result property="people5" column="c_people5" />
+		<!--申请状态1-第一步审批，2-第二步审批 -->
+		<result property="state" column="c_state" />
+		<!--0-审批中1-审批通过2-审批失败 -->
+		<result property="flag" column="c_flag" />
+		<!-- 公司内部自定义编号 -->
+		<result property="transaction" column="c_transaction"/>
+		<result property="emergency" column="c_emergency"/>
+		<result property="examination" column="c_examination"/>
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.create_date,
+		o.create_by,
+		o.del_flag,
+		o.c_department,
+		o.c_post,
+		o.c_name,
+		o.c_count,
+		o.c_channel,
+		o.c_otherText,
+		o.c_time,
+		o.c_type,
+		o.c_price1,
+		o.c_price2,
+		o.c_grade,
+		o.c_timeing,
+		o.c_sex,
+		o.c_age,
+		o.c_education,
+		o.c_major,
+		o.c_experience,
+		o.c_edText,
+		o.c_other,
+		o.c_duty,
+		o.c_remarks,
+		o.c_opinion1,
+		o.c_sign1,
+		o.c_text1,
+		o.c_date1,
+		o.c_people1,
+		o.c_opinion2,
+		o.c_sign2,
+		o.c_text2,
+		o.c_date2,
+		o.c_people2,
+		o.c_opinion3,
+		o.c_sign3,
+		o.c_text3,
+		o.c_date3,
+		o.c_people3,
+		o.c_opinion4,
+		o.c_sign4,
+		o.c_text4,
+		o.c_date4,
+		o.c_people4,
+		o.c_opinion5,
+		o.c_sign5,
+		o.c_text5,
+		o.c_date5,
+		o.c_people5,
+		o.c_state,
+		o.c_flag,
+		o.c_transaction,
+		o.c_emergency,
+		o.c_examination
+	</sql>
+
+	<sql id="searchConditionSql">
+		<if test="condition.department != null and condition.department != ''">
+			AND o.c_department = #{condition.department} 
+		</if>
+		<if test="condition.post != null and condition.post != ''">
+			AND o.c_post =# {condition.post} 
+		</if>
+		<if test="condition.name != null and condition.name != ''">
+			AND o.c_name like '%${condition.name}%' 
+		</if>
+		<if test="condition.channel != null and condition.channel != ''">
+			AND o.c_channel like '%${condition.channel}%' 
+		</if>
+		<if test="condition.education != null and condition.education != ''">
+			AND o.c_education like '%${condition.education}%' 
+		</if>
+		<if test="condition.major != null and condition.major != ''">
+			AND o.c_major like '%${condition.major}%' 
+		</if>
+		<if test="condition.experience != null and condition.experience != ''">
+			AND o.c_experience like '%${condition.experience}%' 
+		</if>
+		<if test="condition.other != null and condition.other != ''">
+			AND o.c_other like '%${condition.other}%' 
+		</if>
+		<if test="condition.duty != null and condition.duty != ''">
+			AND o.c_duty like '%${condition.duty}%' 
+		</if>
+		<if test="condition.remarks != null and condition.remarks != ''">
+			AND o.c_remarks like '%${condition.remarks}%' 
+		</if>
+		<if test="condition.state != null">
+			AND o.c_state = #{condition.state} 
+		</if>
+		<if test="condition.createBy != null and condition.createBy != ''">
+			AND o.create_by = #{condition.createBy} 
+		</if>
+		<if test="condition.flag != null">
+			AND o.c_flag = #{condition.flag} 
+		</if>
+		<if test="condition.signPeople != null and condition.signPeople != ''">
+			AND (o.c_people1 = #{condition.signPeople}
+			OR  o.c_people2 = #{condition.signPeople}
+			OR  o.c_people3 = #{condition.signPeople}
+			OR  o.c_people4 = #{condition.signPeople}
+			OR  o.c_people5 = #{condition.signPeople}
+			OR (o.create_by = #{condition.signPeople} AND c_flag!=0))
+		</if>
+		<if test="condition.transaction != null and condition.transaction != ''">
+			AND o.c_transaction like '%${condition.transaction}%'
+		</if>
+		<if test="condition.beginTime != null and condition.beginTime != ''">
+			AND o.create_date >= #{condition.beginTime} 
+		</if>
+		<if test="condition.endTime != null and condition.endTime != ''">
+			<![CDATA[  AND o.create_date <= #{condition.endTime} ]]>
+		</if>
+		<if test="condition.examination != null and condition.examination != ''">
+			  AND o.c_examination = #{condition.examination}
+		</if>
+		<if test="condition.trialIng != null">
+			<![CDATA[  AND o.c_flag != 0 ]]>
+		</if>
+		AND o.del_flag = 0
+		ORDER BY o.create_date DESC
+	</sql>
+
+	<select id="listWorkRecruitByPage" resultMap="workRecruitResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_recruit o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+		LIMIT #{pageNoBegin},#{pageSize}
+	</select>
+	<select id="listWorkRecruit" resultMap="workRecruitResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_recruit o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+	<select id="listWorkRecruitByPageCount" resultType="int">
+		SELECT count(1) FROM work_recruit o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getWorkRecruitById" resultMap="workRecruitResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_recruit o
+		WHERE o.ID = #{id}
+	</select>
+
+	<insert id="add" parameterType="workRecruit">
+		INSERT INTO work_recruit
+		(
+		id,
+		create_date,
+		create_by,
+		del_flag,
+		c_department,
+		c_post,
+		c_name,
+		c_count,
+		c_channel,
+		c_otherText,
+		c_time,
+		c_type,
+		c_price1,
+		c_price2,
+		c_grade,
+		c_timeing,
+		c_sex,
+		c_age,
+		c_education,
+		c_edText,
+		c_major,
+		c_experience,
+		c_other,
+		c_duty,
+		c_remarks,
+		c_opinion1,
+		c_sign1,
+		c_text1,
+		c_date1,
+		c_people1,
+		c_opinion2,
+		c_sign2,
+		c_text2,
+		c_date2,
+		c_people2,
+		c_opinion3,
+		c_sign3,
+		c_text3,
+		c_date3,
+		c_people3,
+		c_opinion4,
+		c_sign4,
+		c_text4,
+		c_date4,
+		c_people4,
+		c_opinion5,
+		c_sign5,
+		c_text5,
+		c_date5,
+		c_people5,
+		c_state,
+		c_flag,
+		c_transaction,
+		c_emergency,
+		c_examination
+		)
+		VALUES
+		(
+		#{id},
+		SYSDATE(),
+		#{createBy},
+		0,
+		#{department},
+		#{post},
+		#{name},
+		#{count},
+		#{channel},
+		#{otherText},
+		#{time},
+		#{type},
+		#{price1},
+		#{price2},
+		#{grade},
+		#{timeing},
+		#{sex},
+		#{age},
+		#{education},
+		#{edText},
+		#{major},
+		#{experience},
+		#{other},
+		#{duty},
+		#{remarks},
+		#{opinion1},
+		#{sign1},
+		#{text1},
+		#{date1},
+		#{people1},
+		#{opinion2},
+		#{sign2},
+		#{text2},
+		#{date2},
+		#{people2},
+		#{opinion3},
+		#{sign3},
+		#{text3},
+		#{date3},
+		#{people3},
+		#{opinion4},
+		#{sign4},
+		#{text4},
+		#{date4},
+		#{people4},
+		#{opinion5},
+		#{sign5},
+		#{text5},
+		#{date5},
+		#{people5},
+		#{state},
+		#{flag},
+		#{transaction},
+		#{emergency},
+		#{examination}
+		)
+	</insert>
+
+	<update id="update" parameterType="workRecruit" >
+		UPDATE work_recruit SET
+		c_opinion1 = #{opinion1},
+		c_sign1 = #{sign1},
+		c_text1 = #{text1},
+		c_date1 = #{date1},
+		c_people1 = #{people1},
+		c_opinion2 = #{opinion2},
+		c_sign2 = #{sign2},
+		c_text2 = #{text2},
+		c_date2 = #{date2},
+		c_people2 = #{people2},
+		c_opinion3 = #{opinion3},
+		c_sign3 = #{sign3},
+		c_text3 = #{text3},
+		c_date3 = #{date3},
+		c_people3 = #{people3},
+		c_opinion4 = #{opinion4},
+		c_sign4 = #{sign4},
+		c_text4 = #{text4},
+		c_date4 = #{date4},
+		c_people4 = #{people4},
+		c_opinion5 = #{opinion5},
+		c_sign5 = #{sign5},
+		c_text5 = #{text5},
+		c_date5 = #{date5},
+		c_people5 = #{people5},
+		c_state = #{state},
+		c_flag = #{flag},
+		c_examination = #{examination}
+		WHERE ID = #{id}
+	</update>
+
+<!-- 	<delete id="delByIds">
+		DELETE FROM work_recruit 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete> -->
+	<update id="delByIds">
+		UPDATE work_recruit SET del_flag = 1 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="termination">
+		UPDATE work_recruit SET c_flag = 3 
+		WHERE ID =#{id}
+	</update>
+</mapper>

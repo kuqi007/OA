@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.work.dao.WorkProcessDetailsDao">
+	<resultMap type="workProcessDetails" id="workProcessDetailsResultMap">
+		<!--主键id -->
+		<id property="id" column="id" />
+		<!--审批步奏 -->
+		<result property="step" column="c_step" />
+		<!--审批角色id -->
+		<result property="roleid" column="c_roleid" />
+		<!--状态标识 -->
+		<result property="state" column="c_state" />
+		<!--流程表id -->
+		<result property="processid" column="c_processid" />
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.c_step,
+		o.c_roleid,
+		o.c_state,
+		o.c_processid
+	</sql>
+
+	<sql id="searchConditionSql">
+		<if test="condition.roleid != null and condition.roleid != ''">
+			AND o.c_roleid like '%${condition.roleid}%' 
+		</if>
+		<if test="condition.processid != null and condition.processid != ''">
+			AND o.c_processid like '%${condition.processid}%' 
+		</if>
+	</sql>
+
+	<select id="listWorkProcessDetailsByPage" resultMap="workProcessDetailsResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_process_details o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+		LIMIT #{pageNoBegin},#{pageSize}
+	</select>
+	<select id="listWorkProcessDetailsByPageCount" resultType="int">
+		SELECT count(1) FROM work_process_details o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getWorkProcessDetailsById" resultMap="workProcessDetailsResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_process_details o
+		WHERE o.ID = #{id}
+	</select>
+	<select id="listWorkProcessDetails" resultMap="workProcessDetailsResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM work_process_details o
+		WHERE o.c_processid = #{id} ORDER BY c_step ASC
+	</select>
+	<insert id="add" parameterType="workProcessDetails">
+		INSERT INTO work_process_details
+		(
+		id,
+		c_step,
+		c_roleid,
+		c_state,
+		c_processid
+		)
+		VALUES
+		(
+		#{id},
+		#{step},
+		#{roleid},
+		#{state},
+		#{processid}
+		)
+	</insert>
+
+	<update id="update" parameterType="workProcessDetails" >
+		UPDATE work_process_details SET
+		c_step = #{step},
+		c_roleid = #{roleid},
+		c_state = #{state},
+		c_processid = #{processid}
+		WHERE ID = #{id}
+	</update>
+
+	<delete id="delByIds">
+		DELETE FROM work_process_details 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

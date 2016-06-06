@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.administr.dao.AsSuppliesDao">
+	<resultMap type="asSupplies" id="asSuppliesResultMap">
+		<!--主键id -->
+		<id property="id" column="id" />
+		<!--创建时间 -->
+		<result property="createDate" column="create_date" />
+		<!--创建人id -->
+		<result property="createBy" column="create_by" />
+		<!--删除标0-未删除，1-已删除 -->
+		<result property="delFlag" column="del_flag" />
+		<!--商品名字 -->
+		<result property="name" column="c_name" />
+		<!--用品类型id -->
+		<result property="type" column="c_type" />
+		<!--价格 -->
+		<result property="price" column="c_price" />
+		<!--计量单位 -->
+		<result property="company" column="c_company" />
+		<!--数量 -->
+		<result property="num" column="c_num" />
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.create_date,
+		o.create_by,
+		o.del_flag,
+		o.c_name,
+		o.c_type,
+		o.c_price,
+		o.c_company,
+		o.c_num
+	</sql>
+
+	<sql id="searchConditionSql">
+		<if test="condition.name != null and condition.name != ''">
+			AND o.c_name like '%${condition.name}%' 
+		</if>
+		<if test="condition.type != null and condition.type != ''">
+			AND o.c_type = #{condition.type} 
+		</if>
+		<if test="condition.company != null and condition.company != ''">
+			AND o.c_company like '%${condition.company}%' 
+		</if>
+		ORDER BY o.create_date DESC
+	</sql>
+
+	<select id="listAsSuppliesByPage" resultMap="asSuppliesResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_supplies o
+		WHERE 1=1 <include refid="searchConditionSql"/>
+		LIMIT #{pageNoBegin},#{pageSize} 
+	</select>
+	<select id="listAsSuppliesByPageCount" resultType="int">
+		SELECT count(1) FROM as_supplies o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getAsSuppliesById" resultMap="asSuppliesResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_supplies o
+		WHERE o.ID = #{id}
+	</select>
+
+	<select id="getNum" resultType="int">
+		SELECT o.c_num
+		FROM as_supplies o
+		WHERE o.ID = #{id}
+	</select>
+	<select id="listAsSupplies" resultMap="asSuppliesResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_supplies o
+	</select>
+	<select id="listAsSuppliesByType" resultMap="asSuppliesResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_supplies o
+		WHERE o.c_type = #{id}
+	</select>
+	<insert id="add" parameterType="asSupplies">
+		INSERT INTO as_supplies
+		(
+		id,
+		create_date,
+		create_by,
+		del_flag,
+		c_name,
+		c_type,
+		c_price,
+		c_company,
+		c_num
+		)
+		VALUES
+		(
+		#{id},
+		SYSDATE(),
+		#{createBy},
+		0,
+		#{name},
+		#{type},
+		#{price},
+		#{company},
+		#{num}
+		)
+	</insert>
+
+	<update id="update" parameterType="asSupplies" >
+		UPDATE as_supplies SET
+		c_name = #{name},
+		c_type = #{type},
+		c_price = #{price},
+		c_company = #{company},
+		c_num = #{num}
+		WHERE ID = #{id}
+	</update>
+	
+	<update id="updateSuppliesNum" >
+		UPDATE as_supplies SET
+		c_num = c_num - #{num}
+		WHERE ID = #{id}
+	</update>
+	
+	<update id="updateSuppliesNum2" >
+		UPDATE as_supplies SET
+		c_num = c_num + #{num}
+		WHERE ID = #{id}
+	</update>
+	
+	<delete id="delByIds">
+		DELETE FROM as_supplies 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

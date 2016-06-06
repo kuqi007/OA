@@ -1,0 +1,6 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Wed Mar 09 16:49:03 CST 2016
+jackson-mapper-asl-1.9.9.jar>=
+jackson-mapper-asl-1.9.9.pom>oschina-repos=
+jackson-mapper-asl-1.9.9.jar>oschina-repos=
+jackson-mapper-asl-1.9.9-sources.jar>oschina-repos=

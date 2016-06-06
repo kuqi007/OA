@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.schedule.dao.IOaScheduleDao">
+<resultMap type="oaSchedule" id="oaScheduleResultMap">
+		<!--id -->
+		<id property="id" column="id" />
+		<!--归属用户 -->
+		<result property="userId" column="user_id" />
+		<!--开始时间 -->
+		<result property="startTime" column="start_time" />
+		<!--结束时间 -->
+		<result property="endTime" column="end_time" />
+		<!--开始日期 -->
+		<result property="startDate" column="c_start_date" />
+		<!--结束日期 -->
+		<result property="endDate" column="c_end_date" />
+		<!--提醒类型(0：提醒一次，1:按日提醒，2：按周提醒，3：按月提醒 -->
+		<result property="noticeType" column="c_notice_type" />
+		<!--事物标题 -->
+		<result property="title" column="c_title" />
+		<!--事物内容 -->
+		<result property="content" column="c_content" />
+		<!--创建时间 -->
+		<result property="createDate" column="c_create_date" />
+		<!--更新时间 -->
+		<result property="updateDate" column="c_update_date" />
+		<!--删除标记 -->
+		<result property="delFlag" column="c_del_flag" />
+		<!--创建者 -->
+		<result property="createBy" column="c_create_by" />
+		<!--更新者 -->
+		<result property="updateBy" column="c_update_by" />
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.user_id,
+		o.start_time,
+		o.end_time,
+		o.c_start_date,
+		o.c_end_date,
+		o.c_notice_type,
+		o.c_title,
+		o.c_content,
+		o.c_create_date,
+		o.c_update_date,
+		o.c_del_flag,
+		o.c_create_by,
+		o.c_update_by
+	</sql>
+
+	<sql id="searchConditionSql">
+		<if test="condition.userId != null and condition.userId != ''">
+			AND o.user_id like '%${condition.userId}%' 
+		</if>
+		<if test="condition.noticeType != null and condition.noticeType != ''">
+			AND o.c_notice_type like '%${condition.noticeType}%' 
+		</if>
+		<if test="condition.title != null and condition.title != ''">
+			AND o.c_title like '%${condition.title}%' 
+		</if>
+		<if test="condition.content != null and condition.content != ''">
+			AND o.c_content like '%${condition.content}%' 
+		</if>
+		<if test="condition.delFlag != null and condition.delFlag != ''">
+			AND o.c_del_flag like '%${condition.delFlag}%' 
+		</if>
+	</sql>
+	
+	<!--查询当日日程条件  -->
+	<sql id="searchDatetodaySql">
+    	<![CDATA[   and DATE_FORMAT(SYSDATE(), '%Y-%m-%d')>=  DATE_FORMAT(o.c_start_date, '%Y-%m-%d')   ]]>
+    	<![CDATA[  and DATE_FORMAT(SYSDATE(), '%Y-%m-%d') <= DATE_FORMAT(o.c_end_date, '%Y-%m-%d')    ]]>
+		<if test="#{userId}!=null and #{userId}!=''">
+    	<![CDATA[ and o.user_id = #{userId}  ]]>
+		</if>
+		order by o.c_start_date ASC
+	</sql>
+	<!--查询近日日程条件  -->
+	<sql id="searchDateRecentSql">
+    	<![CDATA[   and DATE_FORMAT(SYSDATE(), '%Y-%m-%d')!=DATE_FORMAT(o.c_start_date, '%Y-%m-%d')   ]]>
+    	<![CDATA[  and DATE_FORMAT(SYSDATE(), '%Y-%m-%d') !=DATE_FORMAT(o.c_end_date, '%Y-%m-%d')    ]]>
+    	<!-- <![CDATA[  and DATE_FORMAT(o.c_start_date, '%Y-%m-%d')<DATE_FORMAT(SYSDATE()+10, '%Y-%m-%d')    ]]> -->
+		<if test="#{userId}!=null and #{userId}!=''">
+    	<![CDATA[ and o.user_id = #{userId}  ]]>
+		</if>
+		order by o.c_start_date DESC
+	</sql>
+
+	<select id="listOaScheduleByPage" resultMap="oaScheduleResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM oa_schedule o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+	
+	<select id="listOaScheduleByPageCount" resultType="int">
+		SELECT count(1) FROM oa_schedule o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getOaScheduleById" resultMap="oaScheduleResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM oa_schedule o
+		WHERE o.ID = #{id}
+	</select>
+	
+	<!-- 查询当日的日程 -->
+	<select id="getOaScheduleTodayByUserId" resultMap="oaScheduleResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM oa_schedule o
+		WHERE 1=1 <include refid="searchDatetodaySql"/> 
+	</select>
+	<!-- 查询近日的日程 -->
+	<select id="getOaScheduleRecnetByUserId" resultMap="oaScheduleResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM oa_schedule o
+		WHERE 1=1 <include refid="searchDateRecentSql"/> 
+	</select>
+
+	<select id="getOaScheduleByUserId" resultMap="oaScheduleResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM oa_schedule o
+		WHERE o.user_id = #{userId}  
+	</select>
+	<insert id="add" parameterType="oaSchedule">
+		<!-- <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="id">
+			SELECT SYS_GUID()
+		</selectKey> -->
+		INSERT INTO oa_schedule
+		(
+		id,
+		user_id,
+		start_time,
+		end_time,
+		c_start_date,
+		c_end_date,
+		c_notice_type,
+		c_title,
+		c_content,
+		c_create_date,
+		c_update_date,
+		c_del_flag,
+		c_create_by,
+		c_update_by
+		)
+		VALUES
+		(
+		#{id},
+		#{userId},
+		#{startTime},
+		#{endTime},
+		#{startDate},
+		#{endDate},
+		#{noticeType},
+		#{title},
+		#{content},
+		SYSDATE(),
+		SYSDATE(),
+		#{delFlag},
+		#{createBy},
+		#{updateBy}
+		)
+	</insert>
+
+	<update id="update" parameterType="oaSchedule" >
+		UPDATE oa_schedule SET
+		start_time = #{startTime},
+		end_time = #{endTime},
+		c_start_date = #{startDate},
+		c_end_date = #{endDate},
+		c_notice_type = #{noticeType},
+		c_title = #{title},
+		c_content = #{content},
+		c_update_date = SYSDATE(),
+		c_del_flag = #{delFlag},
+		c_update_by = #{updateBy}
+		WHERE ID = #{id}
+	</update>
+
+	<delete id="delByIds">
+		DELETE FROM oa_schedule 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

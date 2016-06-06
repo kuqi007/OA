@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.administr.dao.AsCroomRecodeDao">
+	<resultMap type="asCroomRecode" id="asCroomRecodeResultMap">
+		<!--主键id -->
+		<id property="id" column="id" />
+		<!--创建时间 -->
+		<result property="createDate" column="create_date" />
+		<!--创建人id -->
+		<result property="createBy" column="create_by" />
+		<!--删除标0-未删除，1-已删除 -->
+		<result property="delFlag" column="del_flag" />
+		<!--申请人id -->
+		<result property="peopleId" column="c_people_id" />
+		<!--申请时间 -->
+		<result property="time" column="c_time" />
+		<!--预计开始时间 -->
+		<result property="timeBegin" column="c_time_begin" />
+		<!--预计结束时间 -->
+		<result property="timeEnd" column="c_time_end" />
+		<!--使用原因 -->
+		<result property="reason" column="c_reason" />
+		<result property="text" column="c_text" />
+		<!--申请状态1-同意2-不同意 -->
+		<result property="state" column="c_state" />
+		<!-- 会议室id -->
+		<result property="croomId" column="c_croomId" />
+		<!-- 非持久层 -->
+		<result property="croomName" column="roomName" />
+	</resultMap>
+
+	<sql id="allColumnSql">
+		o.id,
+		o.create_date,
+		o.create_by,
+		o.del_flag,
+		o.c_people_id,
+		o.c_time,
+		o.c_time_begin,
+		o.c_time_end,
+		o.c_reason,
+		o.c_state,
+		o.c_croomId,
+		c_text
+	</sql>
+
+	<sql id="searchConditionSql">
+		<if test="condition.peopleId != null and condition.peopleId != ''">
+			AND o.create_by =#{condition.peopleId} 
+		</if>
+		<if test="condition.reason != null and condition.reason != ''">
+			AND o.c_reason like '%${condition.reason}%' 
+		</if>
+		<if test="condition.state != null">
+			<if test="condition.state == 3">
+				AND o.c_state !=0 
+			</if>
+			<if test="condition.state != 3">
+				AND o.c_state =#{condition.state} 
+			</if>
+		</if>
+		ORDER BY o.create_date DESC
+	</sql>
+
+	<select id="listAsCroomRecodeByPage" resultMap="asCroomRecodeResultMap">
+		SELECT <include refid="allColumnSql"/>
+		,o1.c_name AS roomName
+		FROM as_croom_recode o
+		RIGHT JOIN as_croom o1 ON o.c_croomId=o1.id 
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+		LIMIT #{pageNoBegin},#{pageSize}  
+	</select>
+	<select id="listAsCroomRecodeByPageCount" resultType="int">
+		SELECT count(1) FROM as_croom_recode o
+		WHERE 1=1 <include refid="searchConditionSql"/> 
+	</select>
+
+	<select id="getAsCroomRecodeById" resultMap="asCroomRecodeResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_croom_recode o
+		WHERE o.ID = #{id}
+	</select>
+	
+	<select id="listAsCroomRecode" resultMap="asCroomRecodeResultMap">
+		SELECT <include refid="allColumnSql"/>
+		FROM as_croom_recode o
+		<![CDATA[
+		WHERE (o.c_time_begin >= #{begTime} 
+		      AND o.c_time_begin <= #{endTime})
+		      OR (o.c_time_begin <= #{begTime} 
+		      AND o.c_time_end >= #{begTime})
+		]]>
+		AND c_state=1<!-- 同意 -->
+	</select>
+	<insert id="add" parameterType="asCroomRecode">
+		INSERT INTO as_croom_recode
+		(
+		id,
+		create_date,
+		create_by,
+		del_flag,
+		c_people_id,
+		c_time,
+		c_time_begin,
+		c_time_end,
+		c_reason,
+		c_state,
+		c_croomId,
+		c_text
+		)
+		VALUES
+		(
+		#{id},
+		SYSDATE(),
+		#{createBy},
+		0,
+		#{peopleId},
+		#{time},
+		#{timeBegin},
+		#{timeEnd},
+		#{reason},
+		#{state},
+		#{croomId},
+		#{text}
+		)
+	</insert>
+
+	<update id="update" parameterType="asCroomRecode" >
+		UPDATE as_croom_recode SET
+		c_people_id = #{peopleId},
+		c_time = #{time},
+		c_time_begin = #{timeBegin},
+		c_time_end = #{timeEnd},
+		c_reason = #{reason},
+		c_state = #{state},
+		c_croomId = #{croomId},
+		c_text=#{text}
+		WHERE ID = #{id}
+	</update>
+
+	<update id="updateAgree">
+		UPDATE as_croom_recode SET
+		c_state = #{state}
+		WHERE ID = #{id}
+	</update>
+
+	<delete id="delByIds">
+		DELETE FROM as_croom_recode 
+		WHERE ID IN 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,443 @@
+* {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	/* overflow-x: hidden; */
+	/* background: url(3.jpg); */
+	background: #fff;
+	/* background-size: 100% auto;
+	background-repeat: no-repeat; */
+}
+
+.oa {
+	width: 100%;
+	height: 100%;
+	/* border: 1px solid #000; */
+	/* margin: 0 auto; */
+	/* background-color:#cccccc; */
+	padding-top: 50px;
+	/* padding-left: 9px; */
+	position: relative;
+	/* border-sizing:border-box; */
+}
+
+.oa a {
+	color: #666;
+	text-decoration: none;
+}
+/* .nav{
+	width:1500px;
+	height:40px;
+	background:  url(../images/nav_bg.png) ;
+	padding: 6px 0px 0px 10px;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+} */
+.fl {
+	width: 40px;
+	height: 28px;
+}
+
+.navbar .nav>li>a {
+	font-family: "Î¢ÈíÑÅºÚ";
+}
+
+.left {
+	/* width:715px; */
+	width: 55%;;
+	height: 100%;
+	/* background-color:pink; */
+	float: left;
+}
+
+.right {
+	/* width:485px; */
+	width: 41%;
+	height: 100%;
+	float: right;
+	margin-right: 4%;
+}
+
+.no1 {
+	/* width:520px; */
+	width: 72%;
+	height: 300px;
+	margin: 0px 0px 35px 9%;
+	background-color: #fff;
+	position: relative;
+	min-height: 206px;
+	border-radius: 5px;
+	border: 1px solid #d9ad75;
+}
+.no6 {
+	/* width:520px; */
+	width: 72%;
+	height: 300px;
+	margin: 0px 0px 35px 9%;
+	background-color: #fff;
+	position: relative;
+	min-height: 206px;
+	border-radius: 5px;
+	border: 1px solid #d9ad75;
+}
+.no6 a:hover {
+	color: #d9ad75;
+	text-decoration: underline;
+}
+.no1 a:hover {
+	color: #d9ad75;
+	text-decoration: underline;
+}
+
+.no1 .tab {
+	margin-top: 10px;
+	position: relative;
+}
+.no6 .tab {
+	margin-top: 10px;
+	position: relative;
+}
+
+.no1 .tab>li {
+	width: 100%;
+	color: #666;
+	background-color: #fff;
+	top: 0px;
+	left: 0px;
+	display:none;
+}
+
+.no6 .tab>li {
+	width: 100%;
+	color: #666;
+	background-color: #fff;
+	top: 0px;
+	left: 0px;
+	display: none;
+}
+
+h3 {
+	height: 30px;
+	text-indent: 8px;
+	/* background-color:green; */
+	border-bottom: 1px solid #d9ad75;
+	padding: 5px 0px 0px 5px;
+	background: -webkit-linear-gradient(#f6e1c4, #efd0a7);
+	/* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(#f6e1c4, #efd0a7);
+	/* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(#f6e1c4, #efd0a7);
+	/* Firefox 3.6 - 15 */
+	background: linear-gradient(#f6e1c4, #efd0a7); /* ±ê×¼µÄÓï·¨ */
+}
+
+.zd {
+	padding: 5px 0px 0px 5px;
+	background-color: #fff;
+}
+
+h3 b {
+	width: 0px;
+	height: 0px;
+	border: 10px solid transparent;
+	border-top: 10px solid #999;
+	position: relative;
+	/* top: 16px; */
+	top: 8px;
+	left: 0px;
+	color: #999;
+	margin-right: 5px;
+}
+
+h3 span {
+	display: inline-block;
+	line-height: 30px;
+	font-size: 14px;
+	color: #3c3c3c;
+	cursor: pointer;
+}
+
+.clearfix:after {
+	content: "";
+	display: block;
+	visibility: hidden;
+	height: 0;
+	clear: both;
+}
+
+.clearfix {
+	zoom: 1;
+}
+
+.list li {
+	height: 24px;
+	text-align: center;
+	line-height: 24px;
+	color: #fff;
+	background-color: #EBEBEB;
+	font-family: "å¾®è½¯é›…é»‘";
+	color: #666;
+	/* border: 1px solid #000; */
+	border-radius: 5px;
+	float: left;
+	margin: 10px 10px 0px 0px;
+	padding: 5px 8px;
+	cursor: pointer;
+}
+
+.no1 .list li.current {
+	background-color: #d7aa73;
+	color: #fff;
+	border-radius: 3px;
+	border: 1px solid #d9ad75;
+}
+.no6 .list li.current {
+	background-color: #d7aa73;
+	color: #fff;
+	border-radius: 3px;
+	border: 1px solid #d9ad75;
+}
+
+.no1 p {
+	position: absolute;
+	top: 94px;
+	left: 14px;
+	color: #868686;
+}
+
+.no6 p {
+	position: absolute;
+	top: 94px;
+	left: 14px;
+	color: #868686;
+}
+
+.news {
+	margin-top: 10px;
+	font-size: 14px;
+}
+
+.news li{
+	line-height: 20px;
+	color:#666;
+	font-family: "å¾®è½¯é›…é»‘";
+}
+
+.tab0 {
+	position: relative;
+}
+
+.tab0>li {
+	width: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #fff;
+	display: none;
+}
+
+.no2 {
+	width: 535px;
+	height: 300px;
+	background-color: #fff;
+	/* margin-left: 10px; */
+	border-radius: 5px;
+	border: 1px solid #d9ad75;
+	position: relative;
+}
+
+.no2 a:hover {
+	color: #d9ad75;
+	text-decoration: underline;
+}
+
+.no2 h3 {
+	
+}
+
+.no2 .zd {
+	height: 165px;
+	border-color: #eee;
+	border-radius: 5px;
+}
+
+.no2 span {
+	cursor: pointer;
+}
+
+.no2 .current {
+	background-color: #008FDE;
+	color: #fff;
+}
+
+.no2 b {
+	border-top-color: #999;
+}
+
+.no2 .list li.current {
+	background-color: #d7aa73;
+}
+
+.no3 {
+	width: 72%;
+	height: 300px;
+	background-color: #fff;
+	margin: 35px 0px 0px 9%;
+	border-radius: 5px;
+	border: 1px solid #d7aa73;
+	position: relative;
+}
+
+.no3 .zd {
+	height: 165px;
+	border-color: #d9ad75;
+	position: relative;
+	border-radius: 5px;
+}
+
+.no3 a:hover {
+	color: #d9ad75;
+	text-decoration: underline;
+}
+
+.no3 span {
+	color: #3c3c3c;
+}
+
+.no3 .current {
+	background-color: #d7aa73;
+	color: #fff;
+}
+
+.no3 b {
+	border-top-color: #999;
+}
+
+.no3 h3 {
+	
+}
+
+.no3 .news li {
+	
+}
+
+.no4 {
+	width: 100%;
+	background-color: #fff;
+	/* position:absolute;
+	top:49px;
+	right:45px; */
+	position: relative;
+}
+
+.no4 .zd {
+	height: 208px;
+	border-color: green;
+	padding-top: 19px;
+}
+
+.no4 span {
+	color: green;
+}
+
+.no4 h3 {
+	border-color: green;
+}
+
+.no4 h3 b {
+	border-top-color: green;
+}
+
+.no5 {
+	width: 535px;
+	margin-top: 35px;
+	/* margin-left: 10px; */
+	background: #fff;
+	border-radius: 5px;
+	border: 1px solid #d7aa73;
+	/* position:absolute;
+	top:341px;
+	right:24px; */
+	position: relative;
+}
+
+.no5 a:hover {
+	color: #d9ad75;
+	text-decoration: underline;
+}
+
+.no5 span {
+	color: #f40 #f40;
+}
+
+.no5 h3 {
+	/* border-bottom: #d7aa73; */
+}
+
+.no5 h3 b {
+	border-top-color: #f40;
+	position: absolute;
+	top: 0;
+	left: 0
+}
+
+.no5 .current {
+	background-color: #f40;
+	color: #fff;
+}
+
+.no5 .news li {
+	color: #f40;
+}
+
+.no5 .zd {
+	height: 165px;
+	border-color: #f40;
+}
+
+form {
+	position: relative;
+	color: #666;
+}
+
+form .lt {
+	margin-top: 20px;
+	margin-left: 5px;
+}
+
+form .lt i, form .rt i {
+	font-style: normal;
+}
+
+form .rt {
+	position: absolute;
+	right: 80px;
+	top: -15px;
+}
+
+form .rt .rt_1 {
+	margin-top: 19px;
+	margin-left: 5px;
+}
+
+.submitbtn {
+	position: absolute;
+	right: 45px;
+	bottom: 15px;
+	z-index: 1000;
+	font-size: 5px;
+}
+
+.btnViewAll {
+	font-size: 12px;
+	display: block;
+}
